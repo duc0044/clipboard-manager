@@ -1,0 +1,18 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bBg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0EA5E9"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bBg)"/>
+  <!-- back card (the "copy" duplicate) -->
+  <rect x="150" y="116" width="180" height="220" rx="28" fill="#ffffff" opacity="0.45"/>
+  <!-- front card -->
+  <rect x="190" y="168" width="180" height="220" rx="28" fill="#ffffff"/>
+  <!-- lines on front card -->
+  <rect x="220" y="216" width="120" height="16" rx="8" fill="#2563EB"/>
+  <rect x="220" y="252" width="120" height="16" rx="8" fill="#BFDBFE"/>
+  <rect x="220" y="288" width="84"  height="16" rx="8" fill="#BFDBFE"/>
+  <rect x="220" y="324" width="104" height="16" rx="8" fill="#BFDBFE"/>
+</svg>
