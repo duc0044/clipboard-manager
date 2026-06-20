@@ -34,7 +34,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ5OUVENThGQUMwM0NCQTUKUldTbHl3T3NqOVdlMmFsMmNJVUd0cC9SUUdmMkJ5RGRZcGRsTmUyQVhmOFNnUDRoREpiTisyRnUK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEMxNkVCRjgwMEQ0RjNEMTUKUldRVlBVOE5nTDl1d1plK0FvM3pjS2wxSEsvWkVrSHlkTTVjSnZ3cjR5TXpsRmUyR2VVSFRCVGwK",
       "endpoints": [
         "https://github.com/duc0044/clipboard-manager/releases/latest/download/latest.json"
       ],
