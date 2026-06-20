@@ -2,7 +2,7 @@
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "clipboard-manager",
   "version": "0.1.0",
-  "identifier": "com.ngthanhvu.clipboard-manager",
+  "identifier": "com.duc0044.clipboard-manager",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -34,9 +34,9 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEI3RkQ1MzI4RTM0NEU0MjEKUldRaDVFVGpLRlA5dDVsd0M5emRpVUxkYmQwNGdGTlFCemRxWEtOajd5VEpjb3F0SStwQVNERjcK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ5OUVENThGQUMwM0NCQTUKUldTbHl3T3NqOVdlMmFsMmNJVUd0cC9SUUdmMkJ5RGRZcGRsTmUyQVhmOFNnUDRoREpiTisyRnUK",
       "endpoints": [
-        "https://github.com/ngthanhvu/clipboard-manager/releases/latest/download/latest.json"
+        "https://github.com/duc0044/clipboard-manager/releases/latest/download/latest.json"
       ],
       "windows": {
         "installMode": "passive"

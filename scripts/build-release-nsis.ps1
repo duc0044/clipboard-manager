@@ -25,7 +25,7 @@ if (-not $env:TAURI_SIGNING_PRIVATE_KEY) {
 
 Push-Location $root
 try {
-  npm run tauri -- build --bundles nsis
+  npx tauri build --bundles nsis
   npm run release:latest-json
 }
 finally {
