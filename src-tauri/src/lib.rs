@@ -665,6 +665,7 @@ pub fn run() {
             Some(vec![START_MINIMIZED_ARG]),
         ))
         .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_process::init())
         .plugin(
             ShortcutBuilder::new()
                 .with_handler(|app, _, event| {

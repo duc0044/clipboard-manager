@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { check } from "@tauri-apps/plugin-updater";
+import { relaunch } from "@tauri-apps/plugin-process";
 import {
   Button,
   Dialog,
@@ -104,6 +105,7 @@ function App() {
   const [updateMessage, setUpdateMessage] = useState("");
   const [updateVersion, setUpdateVersion] = useState("");
   const [updateProgress, setUpdateProgress] = useState(0);
+  const [newVersionAvailable, setNewVersionAvailable] = useState("");
 
   const refreshSettings = async () => {
     setShortcut(await invoke<string>("get_shortcut"));
@@ -148,6 +150,18 @@ function App() {
       void unlistenSettings.then((dispose) => dispose());
       media.removeEventListener("change", updateTheme);
     };
+  }, []);
+
+  // Tự kiểm tra cập nhật một lần khi mở app (im lặng, không cản trở người dùng).
+  // Nếu có bản mới sẽ hiện banner; người dùng tự bấm cài trong tab "Cập nhật".
+  useEffect(() => {
+    check()
+      .then((update) => {
+        if (update) {
+          setNewVersionAvailable(update.version);
+        }
+      })
+      .catch(console.error);
   }, []);
 
   const filteredClips = useMemo(
@@ -380,7 +394,9 @@ function App() {
       });
 
       setUpdateState("installed");
-      setUpdateMessage("Đã cài cập nhật. Hãy thoát và mở lại ứng dụng để dùng phiên bản mới.");
+      setUpdateMessage("Đã cài cập nhật. Đang khởi động lại ứng dụng...");
+      // Tự khởi động lại để chạy ngay phiên bản mới.
+      await relaunch();
     } catch (error) {
       setUpdateState("idle");
       setUpdateMessage(String(error));
@@ -419,6 +435,23 @@ function App() {
             </Tooltip>
           </div>
         </header>
+
+        {newVersionAvailable && (
+          <button
+            type="button"
+            className="update-banner"
+            onClick={() => {
+              setSettingsOpen(true);
+              setSettingsTab("updates");
+              setShortcutError("");
+              setSettingsError("");
+              resetUpdateStatus();
+              refreshSettings().catch(console.error);
+            }}
+          >
+            Có phiên bản mới v{newVersionAvailable} — bấm để cập nhật
+          </button>
+        )}
 
         <section className="controls">
           <Input

@@ -471,6 +471,22 @@ button {
   width: 100%;
 }
 
+.update-banner {
+  display: block;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  padding: 6px 12px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--colorNeutralForegroundOnBrand);
+  background: var(--colorBrandBackground);
+}
+
+.update-banner:hover {
+  background: var(--colorBrandBackgroundHover);
+}
+
 .update-actions > span {
   color: var(--colorNeutralForeground3);
   font-size: 11px;

@@ -4,7 +4,7 @@ $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 $configPath = Join-Path $root "src-tauri\tauri.conf.json"
 $config = Get-Content -Raw -LiteralPath $configPath | ConvertFrom-Json
 $version = [string]$config.version
-$repo = "ngthanhvu/clipboard-manager"
+$repo = "duc0044/clipboard-manager"
 
 $bundleDir = Join-Path $root "src-tauri\target\release\bundle\nsis"
 $installer = Get-ChildItem -LiteralPath $bundleDir -Filter "*_x64-setup.exe" |
