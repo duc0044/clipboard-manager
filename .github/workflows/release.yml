@@ -1,6 +1,20 @@
+# ============================================================================
+#  🚀 Workflow: Release
+# ----------------------------------------------------------------------------
+#  Nhiệm vụ: tự động build → ký số → đóng gói → tạo GitHub Release cho app
+#  Clipboard Manager mỗi khi bạn đẩy một git tag phiên bản lên GitHub.
+#
+#  Cách dùng (chạy ngay trên máy bạn):
+#     npm version patch              # tăng version, tạo commit + tag (vd v0.1.1)
+#     git push && git push --tags    # đẩy code và tag lên GitHub
+#  → GitHub Actions sẽ tự chạy toàn bộ phần còn lại bên dưới.
+# ============================================================================
+
 name: Release
 
-# Đẩy một tag dạng v* (vd: v0.1.0) là workflow tự build, ký và tạo GitHub Release.
+# --- Kích hoạt khi nào? -----------------------------------------------------
+# Chỉ chạy khi có tag bắt đầu bằng "v" được push lên (vd: v0.1.0, v1.2.3).
+# Push code thường (không kèm tag) sẽ KHÔNG kích hoạt workflow này.
 on:
   push:
     tags:
@@ -8,39 +22,63 @@ on:
 
 jobs:
   release:
+    # --- Quyền hạn ----------------------------------------------------------
+    # Cấp quyền GHI vào repo để bước cuối có thể tạo Release & upload file cài.
     permissions:
       contents: write
+
+    # --- Máy chạy -----------------------------------------------------------
+    # Bắt buộc Windows vì app build ra bộ cài .exe (NSIS) cho Windows.
     runs-on: windows-latest
+
     steps:
+      # 1️⃣ Lấy mã nguồn về máy ảo CI tại đúng commit của tag.
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 2️⃣ Cài Node.js 20 để build frontend (React + Vite + TypeScript).
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # 3️⃣ Cài bộ công cụ Rust (stable) để biên dịch backend Tauri.
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
 
+      # 4️⃣ Cache thư mục build của Rust giữa các lần chạy.
+      #     → Lần đầu chậm (biên dịch toàn bộ crate), các lần sau nhanh hơn nhiều.
       - name: Cache Rust build
         uses: swatinem/rust-cache@v2
         with:
           workspaces: src-tauri
 
+      # 5️⃣ Cài dependencies frontend từ package-lock.json (sạch & đúng phiên bản).
       - name: Install frontend deps
         run: npm ci
 
+      # 6️⃣ Trái tim của workflow: build app, KÝ SỐ bản cài cho updater,
+      #     rồi tạo GitHub Release và đính kèm file .exe + latest.json.
       - name: Build, sign & publish release
         uses: tauri-apps/tauri-action@v0
         env:
+          # Token GitHub tự động cấp cho workflow — dùng để tạo Release.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 🔑 Khóa bí mật ký bản cập nhật. KHÔNG để lộ — lưu trong
+          #    Settings → Secrets and variables → Actions của repo.
+          #    Public key tương ứng nằm trong src-tauri/tauri.conf.json (updater.pubkey).
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
+          # Tên tag vừa push (vd v0.1.0) — dùng làm tên tag của Release.
           tagName: ${{ github.ref_name }}
+          # Tiêu đề Release hiển thị trên GitHub.
           releaseName: "Clipboard Manager ${{ github.ref_name }}"
+          # Mô tả mặc định cho Release.
           releaseBody: "Tải file `*_x64-setup.exe` bên dưới để cài. Các bản sau sẽ tự cập nhật trong ứng dụng."
+          # Tạo ở dạng nháp (draft) để bạn xem lại rồi mới bấm Publish thủ công.
           releaseDraft: true
+          # Đây là bản chính thức, không phải bản thử nghiệm.
           prerelease: false
+          # Chỉ đóng gói bộ cài NSIS (.exe) — gọn, nhanh, hợp với updater.
           args: --bundles nsis
