@@ -77,8 +77,8 @@ jobs:
           # Mô tả mặc định cho Release.
           releaseBody: "Tải file `*_x64-setup.exe` bên dưới để cài. Các bản sau sẽ tự cập nhật trong ứng dụng."
           # Tạo ở dạng nháp (draft) để bạn xem lại rồi mới bấm Publish thủ công.
-          releaseDraft: true
+          releaseDraft: false
           # Đây là bản chính thức, không phải bản thử nghiệm.
-          prerelease: false
+          prerelease: true
           # Chỉ đóng gói bộ cài NSIS (.exe) — gọn, nhanh, hợp với updater.
           args: --bundles nsis
